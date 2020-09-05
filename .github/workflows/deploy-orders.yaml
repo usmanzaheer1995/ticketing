@@ -40,7 +40,7 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           
       - name: Switch kubectl context to digital ocean
-        run: doctl kubernetes cluster kubeconfig save orders
+        run: doctl kubernetes cluster kubeconfig save ticketing
       
       - run: kubectl rollout restart deployment orders-depl
         name: Restart kubectl deployment
