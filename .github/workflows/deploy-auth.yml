@@ -35,4 +35,4 @@ jobs:
           
       # Runs a single command using the runners shell
       - name: Push auth image to dockerhub
-        run: dockerpush usmanzaheer/ticketing-auth
+        run: docker push usmanzaheer/ticketing-auth
