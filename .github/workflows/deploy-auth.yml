@@ -19,20 +19,27 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
       - name: Build image
         run: cd auth && docker build -t usmanzaheer/ticketing-auth .
       
-      # Runs a single command using the runners shell
       - name: Login to dockerhub
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           
-      # Runs a single command using the runners shell
       - name: Push auth image to dockerhub
         run: docker push usmanzaheer/ticketing-auth
+        
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          
+      - name: Switch kubectl context to digital ocean
+        run: doctl kubernetes cluster kubeconfig save ticketing
+      
+      - run: kubectl rollout restart deployment auth-depl
+        name: Restart kubectl deployment
