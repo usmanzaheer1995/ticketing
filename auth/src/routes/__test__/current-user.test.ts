@@ -17,7 +17,7 @@ it('responds with details about the current user', async () => {
   const response = await agent
     .get('/api/users/currentuser')
     .send()
-    .expect(200);
+    .expect(400);
 
   expect(response.body.current_user.email).toEqual('test@test.com');
 });
